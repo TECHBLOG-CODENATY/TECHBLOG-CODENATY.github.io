@@ -8,7 +8,7 @@
     <link href="/2021/03/07/page/"/>
     <url>/2021/03/07/page/</url>
     
-    <content type="html"><![CDATA[<p>안녕하세요.</p><h2 id="블록체인-유한체-타원곡선-타원곡선-암호화"><a href="#블록체인-유한체-타원곡선-타원곡선-암호화" class="headerlink" title="[블록체인] 유한체, 타원곡선, 타원곡선 암호화"></a>[블록체인] 유한체, 타원곡선, 타원곡선 암호화</h2><p><img src="/img/contents/illon.jpg"></p>]]></content>
+    <content type="html"><![CDATA[<p>안녕하세요.</p><h2 id="블록체인-유한체-타원곡선-타원곡선-암호화"><a href="#블록체인-유한체-타원곡선-타원곡선-암호화" class="headerlink" title="[블록체인] 유한체, 타원곡선, 타원곡선 암호화"></a>[블록체인] 유한체, 타원곡선, 타원곡선 암호화</h2><p><img src="/img/contents/illon.jpg"></p><h2 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h2><p>리눅스 커널 공격(Linux Kernel Exploitation)을 진행하기 위해서는 리눅스 커널(Linux Kernel)에 대한 이해가 먼저 선행되어야 한다. 하지만 리눅스 커널(Linux Kernel)은 일반적으로 접근한다면 오픈소스의 특성인 집단지성의 결정체라고 할 수 있을만큼 매우 방대하며 모든 것을 학습을 할 수 없다. 그러므로 리눅스 커널 공격(Linux Kernel Exploitation)을 위한 기초적인 운영체제의 지식을 기반으로하여 프로세스의 메모리 구조, 유저모드(user mode)와 커널모드(kernel mode), 커널의 공격할 수 있는 부분(attack surface)가 될 수 있는 많은 부분 중 쉽게 구현할 수 있는 디바이스 드라이버(device driver)를 기반으로 연구를 진행했다.</p>]]></content>
     
     
     <categories>

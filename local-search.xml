@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>[블록체인] 직렬화</title>
+    <link href="/2021/03/16/post04/"/>
+    <url>/2021/03/16/post04/</url>
+    
+    <content type="html"><![CDATA[<h2 id="블록체인-직렬화"><a href="#블록체인-직렬화" class="headerlink" title="[블록체인] 직렬화"></a>[블록체인] 직렬화</h2><p><img src="/img/contents/illon.jpg"></p></br><h2 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h2><p>블록체인에서 어떤 누군가가 발행한 것이며 이를 어떻게 검증할 것인가에 관한 문제는 신뢰성이 보장되야하는 기록에서는 매우 중요한 요소 중 하나로 볼 수 있다. 이를 위해서 공개키, 비밀키, 서명에 관해서 다루었고 이러한 정보들은 컴퓨터 상에 저장매체에 저장되며 최종적으로 네트워크 상에 전달되는 데이터이다. 다음의 경우 이를 원본 데이터로 저장할 경우 저장 공간 상의 낭비 및 네트워크 트래픽이 커지기 때문에 이를 압축하거나 포맷화하여 저장하는 경우가 일반적인 방식이며 이를 직렬화(serialization)이라고 한다.</p></br><h2 id="비압축-SEC-형식"><a href="#비압축-SEC-형식" class="headerlink" title="비압축 SEC 형식"></a>비압축 SEC 형식</h2><p><img src="/img/contents/not-compressed-SEC.png"></p><p>타원곡선 암호방식에 있어서 공개키의 경우 타원곡선 상의 점으로 좌표형식($G_x, G_y$)이다. 이러한 특성에 기인해서 공개키를 직렬화하려고 한다. 다음의 적용할 방식은 공개키를 비압축식 SEC형식으로 직렬화하는 방식을 의미한다.</p><blockquote><ol><li>0x04의 1바이트를 접두부로 시작한다.</li><li>공개키의 $x$좌표를 32바이트 빅엔디언(Big-Endian)으로 표현한다.</li><li>공개키의 $y$좌표를 32바이트 빅엔디언(Big-Endian)으로 표현한다.</li></ol></blockquote></br><h2 id="압축-SEC-형식"><a href="#압축-SEC-형식" class="headerlink" title="압축 SEC 형식"></a>압축 SEC 형식</h2><p><img src="/img/contents/elliptic-curve-inf.png"></p><p>타원곡선 상의 점의 특성에 근거하여 공개키를 보다 효율적으로 표현할 수 있는 방식이 존재한다. 타원곡선의 경우 하나의 $x$좌표에 따라 총 2개의 $y$좌표가 존재하는 것을 확인할 수 있다. 결과적으로 다음의 점 $(x,y)\quad(x, -y)$ 이 해가 될 수 있다. </p><p>유한체에서 $-y $ % $ p &#x3D; (p-y) $ % $ p $ 이므로 $(x, p-y)$또한 만족시킬 수 있다.</p><p>유한체의 위수 $p$의 경우가 소수이므로 $y$가 짝수일 경우 $p-y$는 홀수, $y$가 홀수일 경우 $p-y$는 짝수가 된다. 결과적으로 $x$값과 $y$값의 홀수, 짝수 여부만 표시할 경우 공개키를 특정할 수 있다.</p></br><p><img src="/img/contents/compressed-SEC.png"></p></br><blockquote><ol><li>$G_y$ 값이 짝수면 0x02, 홀수면 0x03인 1바이트 접두부로 시작한다.</li><li>공개키의 $x$좌표를 32바이트 빅엔디언(Big-Endian) 정수로 표현한다.</li></ol></blockquote></br><h2 id="DER-서명-형식"><a href="#DER-서명-형식" class="headerlink" title="DER 서명 형식"></a>DER 서명 형식</h2><p><img src="/img/contents/DER.png"></p><p>서명을 직렬화 하기 위해서는 서명을 검증하기 위한 값이 $(r, s)$를 직렬화해야 한다. 또한 $s$값을 $r$값에서 유도할 수 없기 때문에 해당 정보를 압축할 순 없다. 초기 비트코인에서 이를 직렬화하기 위해서는 DER 형식을 사용하였다. </p><p>DER 서명 형식은 아래와 같은 과정으로 구성될 수 있다.</p></br><blockquote><ol><li>0x30의 1바이트를 접두부로 시작한다.</li><li>서명의 길이를 붙힌다. 보통은 0x44나 0x45가 된다.</li><li>$r$ 값의 시작을 표시하는 표식 바이트로 0x02를 붙힌다.</li><li>빅엔디언 정수로 $r$ 값을 표현한다. 첫 번째 바이트가 0x80보다 크거나 같으면 0x00을 앞에 붙힌다. 이후 처리된 $r$의 길이에 해당하는 바이트를 앞에 붙힌다.</li><li>$s$ 값의 시작을 표시하는 표식 바이트로 0x02를 붙힌다.</li><li>빅엔디언 정수로 $s$ 값을 표현한다. 첫 번째 바이트가 0x80보다 크거나 같으면 0x00을 앞에 붙힌다. 이후 처리된 $s$의 길이에 해당하는 바이트를 앞에 붙힌다.</li></ol></blockquote></br><div class="code-wrapper"><pre><code class="hljs">def der(r,s):    # 1. r 값의 처리    r_bin = r.to_bytes(32, byteorder=&#39;big&#39;)    if(r_bin[0] &amp; 0x80):        r_bin = b&#39;\x00&#39; + r_bin    r_bin_length = len(r_bin).to_bytes(1, byteorder=&#39;big&#39;)    #2. s 값의 처리    s_bin = s.to_bytes(32, byteorder=&#39;big&#39;)    if(s_bin[0] &amp; 0x80):        s_bin = b&#39;\x00&#39; + s_bin    s_bin_length = len(s_bin).to_bytes(1, byteorder=&#39;big&#39;)    #3. 서명 생성    signature = b&#39;\x02&#39; + r_bin_length + r_bin + b&#39;\x02&#39; + s_bin_length + s_bin    signature = b&#39;\x30&#39; + len(signature).to_bytes(1, byteorder=&#39;big&#39;) + signature    return signature</code></pre></div></br><h2 id="BASE58-인코딩"><a href="#BASE58-인코딩" class="headerlink" title="BASE58 인코딩"></a>BASE58 인코딩</h2><p>Base58 인코딩의 경우 바이너리 형태의 데이터를 사람이 읽어볼 수 있는 데이터로 표현하는 형태이다. 이를 수행하는 알고리즘의 경우 하단의 코드로 첨부하겠다.</p></br><div class="code-wrapper"><pre><code class="hljs">BASE58_ALPHABET = &#39;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&#39;def encode_base58(s):    count = 0    for c in s:        if c == 0:            count += 1        else:            break    num = int.from_bytes(s, &#39;big&#39;)    prefix = &#39;1&#39;*count    result = &#39;&#39;    print(&quot;[+] count: &quot; + str(count))    while num &gt; 0:        num, mod = divmod(num, 58)        result = BASE58_ALPHABET[mod] + result    return prefix + result</code></pre></div><p>다음의 해시 데이터는 다음과 같은 형태로 변환될 수 있다.</p><blockquote><p>7c076ff316692a3d7eb3c3bb0f8b1488cf72e1afcd929e29307032997a838a3d<br>eff69ef2b1bd93a66ed5219add4fb51e11a840f404876325a1e8ffe0529a2c<br>c84dcc25da0941ef00793d6bbaf99285453913e7ca307fe82dbaffa83c681494</p></blockquote><p>해당 데이터가 Base54 Encoding을 통해 산출되는 값이다.</p><blockquote><p>9MA8fRQrT4u8Zj8ZRd6MAiiyaxb2Y1CMpvVkHQu5hVM6<br>4fE3H2E6XMp4SsxtwinF7w9a34ooUrwWe4WsW1458Pd<br>EUuLxGCXgYPbyvZpG3zYcwMiDJzbbMvkYR47EX1wJXwR</p></blockquote></br><h2 id="비트코인의-주소-형식"><a href="#비트코인의-주소-형식" class="headerlink" title="비트코인의 주소 형식"></a>비트코인의 주소 형식</h2><p>압축 SEC형식의 경우도 33바이트[홀수&#x2F;짝수(1바이트) + $G_x$(32바이트)]이므로 데이터의 크기가 적은 크기가 아니다. 이를 20바이트 형태로 효율적으로 줄일 수 있는 방법이 존재한다.</p><blockquote><ol><li>메인넷 주소의 경우 0x00, 테스트넷 주소의 경우 0x6f로 접두부를 시작한다.</li><li>압축 혹은 비압축 SEC 형식의 주소를 sha256 해시함수에 입력한 후, 다시 ripemd160 해시함수에 입력한다.</li><li>1의 접두 바이트와 2의 해시결과를 합친다.</li><li>3에서 얻은 결과를 sha256을 통해 해쉬하며 해당 결과에서 첫 4바이트를 취한다.</li><li>3의 결과에서 4의 결과를 붙힌 후 이를 Base58로 부호화 한다.</li></ol></blockquote><p>이를 통해 총 20바이트 크기의 주소 형식을 산출할 수 있다.</p></br><h2 id="한줄평"><a href="#한줄평" class="headerlink" title="한줄평"></a>한줄평</h2><div class="code-wrapper"><pre><code class="hljs">파일 포맷 분석의 PTSD가 떠오릅니다.</code></pre></div>]]></content>
+    
+    
+    <categories>
+      
+      <category>Research</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>blockchain</tag>
+      
+      <tag>serialization</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[블록체인] 디지털 서명(부제: 자갈치로 뭘 할 수 있다고?)</title>
     <link href="/2021/03/11/post03/"/>
     <url>/2021/03/11/post03/</url>

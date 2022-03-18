@@ -1,0 +1,736 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="G4EG4EGAE">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[블록체인] 트랜잭션   서론비트코인의 경우 재화를 가지고 있는 소유권자와 재화를 전달받고자 하는 수신자에게 디지털 재화들이 전달되는 것이 구현되어야만 이는 재화로써의 유의미한 가치를 지니게 된다. 비트코인의 경우에도 이러한 형태들이 구현이 되어 있으며 이를 트랜잭션이라고 한다. 즉, 트랜잭션은 한 엔터티에서 다른 엔터티로의 가치 이동을 표현한다. 이러한">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[블록체인] 트랜잭션">
+<meta property="og:url" content="http://techblog.codenaty.io/2021/03/17/post05/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[블록체인] 트랜잭션   서론비트코인의 경우 재화를 가지고 있는 소유권자와 재화를 전달받고자 하는 수신자에게 디지털 재화들이 전달되는 것이 구현되어야만 이는 재화로써의 유의미한 가치를 지니게 된다. 비트코인의 경우에도 이러한 형태들이 구현이 되어 있으며 이를 트랜잭션이라고 한다. 즉, 트랜잭션은 한 엔터티에서 다른 엔터티로의 가치 이동을 표현한다. 이러한">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://techblog.codenaty.io/img/contents/illon.jpg">
+<meta property="article:published_time" content="2021-03-17T10:36:30.000Z">
+<meta property="article:modified_time" content="2022-03-18T05:01:59.292Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="blockchain">
+<meta property="article:tag" content="transaction">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://techblog.codenaty.io/img/contents/illon.jpg">
+  
+  
+  <title>[블록체인] 트랜잭션 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"techblog.codenaty.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>CODENATY 기술 블로그</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="[블록체인] 트랜잭션">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      G4EG4EGAE
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-17 19:36" pubdate>
+        2021-03-17 19:03:00
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.1k words
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52 minute
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[블록체인] 트랜잭션</h1>
+            
+            <div class="markdown-body">
+              <h2 id="블록체인-트랜잭션"><a href="#블록체인-트랜잭션" class="headerlink" title="[블록체인] 트랜잭션"></a>[블록체인] 트랜잭션</h2><p><img src="/img/contents/illon.jpg" srcset="/img/loading.gif" lazyload></p>
+</br>
+
+<h2 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h2><p>비트코인의 경우 재화를 가지고 있는 소유권자와 재화를 전달받고자 하는 수신자에게 디지털 재화들이 전달되는 것이 구현되어야만 이는 재화로써의 유의미한 가치를 지니게 된다. 비트코인의 경우에도 이러한 형태들이 구현이 되어 있으며 이를 트랜잭션이라고 한다. 즉, 트랜잭션은 한 엔터티에서 다른 엔터티로의 가치 이동을 표현한다. 이러한 트랜잭션 또한 디지털 데이터의 형식이므로 포맷에 맞추어 지정이 되어 있다. 포맷을 분석하며 트랜잭션의 구성요소를 파악하고 의미를 확인해보려고 한다.</p>
+</br>
+
+
+<h2 id="트랜잭션-구성요소"><a href="#트랜잭션-구성요소" class="headerlink" title="트랜잭션 구성요소"></a>트랜잭션 구성요소</h2><p><img src="/img/contents/transaction.png" srcset="/img/loading.gif" lazyload></p>
+</br>
+
+<blockquote>
+<ol>
+<li>버전(Version)</li>
+<li>입력(Inputs)</li>
+<li>출력(Outputs)</li>
+<li>록타임(Locktime)</li>
+</ol>
+</blockquote>
+</br>
+
+<p>트랜젝션은 다음 네 가지 요소로 구성된다. 버전의 경우 트랜잭션의 버전을 의미한다. 입력의 경우 사용할 비트코인을 정의하고, 출력의 경우 비트코인이 어디로 가는지 종착지를 정의한다. 록타임은 트랜잭션의 유효시점을 규정한다.</p>
+</br>
+
+
+<h2 id="버전"><a href="#버전" class="headerlink" title="버전"></a>버전</h2><p><img src="/img/contents/version.png" srcset="/img/loading.gif" lazyload></p>
+<p>버전의 경우 비트코인 트랜잭션의 버전 정보를 의미한다. 해당 값은 4바이트로 리틀엔디언의 형태로 표현되어 있다. 결과적으로 상단의 나온 그림에서의 버전은 1이라고 확인할 수 있다.</p>
+</br>
+
+<h2 id="입력"><a href="#입력" class="headerlink" title="입력"></a>입력</h2><p><img src="/img/contents/transaction-input.png" srcset="/img/loading.gif" lazyload></p>
+</br>
+
+<blockquote>
+<ol>
+<li>입력의 수(Input Numbers)</li>
+<li>이전 트랜잭션의 해시값 혹은 ID(Previous Tx ID)</li>
+<li>이전 트랜잭션의 출력 번호(Previous Tx index)</li>
+<li>해제 스크립트(ScriptSig)</li>
+<li>시퀀스(Sequence)</li>
+</ol>
+</blockquote>
+</br>
+
+<p>입력의 경우 입력의 수, 이전 트랜잭션의 해시값, 출력 번호, 해제 스크립트, 시퀀스로 나뉜다. 입력 수의 경우 해당 트랜잭션의 비트코인의 입력 수를 의미한다. 트랜잭션 별로 한 개의 입력만이 존재하지 않을 수 있기 때문이다. 또한 가변 정수의 형태로 표현이 이뤄진다. 표현 범위에 따라서 입력수 바이트의 크기가 변경될 수 있다.</p>
+<p>다음으로 이전 트랜잭션의 해시값과 출력번호를 설명한다. 상단의 그림에서 표현된 부분의 빨간색을 의미하며 이는 리틀엔디언 형태로 해석할 경우 이전 트랜잭션의 해시값이 된다. 출력 번호 또한 리틀 엔디언으로 해석한다. </p>
+<p>다음으로 해제 스크립트를 표현하며 해제 스크립트의 경우는 길이가 가변적으로 변하는 필드이다. 이를 파싱하기 위해서는 정확한 길이를 알아야 하며 이는 향후 보다 구체적으로 설명한다.</p>
+<p>마지막으로 시퀀스 필드를 의미한다. 초기 목적은 록타임 필드로 활용하여 매우 빈번한 거래를 효율적으로 처리하기 위함이였으나 현재는 RBF와 OP_CHECKSEQUENCEVERIFY로 사용되고 있다.</p>
+</br>
+
+<h2 id="출력"><a href="#출력" class="headerlink" title="출력"></a>출력</h2><p><img src="/img/contents/transaction-output.png" srcset="/img/loading.gif" lazyload></p>
+</br>
+
+<blockquote>
+<ol>
+<li>출력의 수(Output Numbers)</li>
+<li>비트코인 금액</li>
+<li>잠금 스크립트(ScriptPubKey)</li>
+</ol>
+</blockquote>
+</br>
+
+<p>출력의 경우 출력의 수, 비트코인 금액, 잠금 스크립트로 나뉜다. 출력 수의 경우 해당 트랜잭션의 비트코인의 출력 수를 의미한다. 트랜잭션 별로 여러 명에게 금액을 보내고자 하는 경우가 있기 때문이다. 또한 가변 정수의 형태로 표현이 이뤄진다. 표현 범위에 따라서 출력 수 바이트의 크기가 변경될 수 있다.</p>
+<p>다음으로 비트코인의 금액이다. 보다 구체적으로 설명할 경우, 사토시의 단위로 표현하며, 출력이 내포하는 비트코인의 양을 의미한다. 이를 리틀엔디언으로 표현하며 상단의 나온 이미지의 경우 16,861satoshi로 0.00016861BTC을 의미한다.</p>
+<p>마지막으로 잠금 스크립트를 의미하며 비트코인이 담긴 금고, 즉 누구든지 돈을 넣을 수는 있지만 해제하기 위해서는 금고 열쇠 소유자만이 열수 있는 금고라고 생각하면 된다. 이는 다음 장에서 보다 구체적으로 설명할 예정이다.</p>
+</br>
+
+<h2 id="록타임"><a href="#록타임" class="headerlink" title="록타임"></a>록타임</h2><p><img src="/img/contents/transaction-locktime.png" srcset="/img/loading.gif" lazyload></p>
+</br>
+
+<blockquote>
+<ol>
+<li>록타임(Locktime)</li>
+</ol>
+</blockquote>
+</br>
+
+<p>록타임은 트랜잭션 전파 후 실행을 지연시키는 방법을 제공한다. 예를 들어 600,000의 록타임 값을 가지는 경우 트랜잭션은 600,001블록까지는 블록체인에 포함될 수 없다. 록타임 값이 500,000,000보다 클 경우는 유닉스 타임으로 해석하며 그 이하일 경우 블록의 높이로 해석한다. 록타임 시점이 도달하기 전까지는 비트코인을 소비할 수 없다.</p>
+</br>
+
+<h2 id="트랜잭션-수수료"><a href="#트랜잭션-수수료" class="headerlink" title="트랜잭션 수수료"></a>트랜잭션 수수료</h2></br>
+
+<p>지금까지 다룬 트랜잭션은 블록체인 블록에 포함되지 않은 형태의 트랜잭션을 의미한다. 이러한 트랜잭션이 결정되기 위해서는 채굴자가 트랜잭션을 블록에 포함시켜야 한다. 이러한 작업은 어떠한 보상이 있어야 하며 이러한 보상은 수수료로 결정된다.</p>
+<p>수수료는 비트코인 금액의 입력의 합에서 출력의 합을 뺀 값을 의미한다. 채굴자는 채굴을 통해서 이를 가져간다. 입력은 금액 필드를 가지고 있지 않기 때문에 금액이 입력이 가리키는 이전 트랜잭션의 출력에서 찾아야 한다.</p>
+</br>
+
+<h2 id="실습-트랜잭션-파싱"><a href="#실습-트랜잭션-파싱" class="headerlink" title="실습 - 트랜잭션 파싱"></a>실습 - 트랜잭션 파싱</h2></br>
+
+<p>앞서 기재했던 정보들을 토대로 이해를 도모하기 위해서 나만의 파서(parser)를 구현해보앗다.</p>
+<p><img src="/img/contents/transaction-practice.JPG" srcset="/img/loading.gif" lazyload></p>
+</br>
+
+<p>기재된 트랜잭션 정보에 대한 파싱을 수행해보려고 한다.</p>
+</br>
+
+<div class="code-wrapper"><pre><code class="hljs">from selenium import webdriver
+from pyvirtualdisplay import Display
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+import os
+import warnings
+
+warnings.filterwarnings(&quot;ignore&quot;)
+
+# display = Display(visible=1, size=(1920, 1080))
+# display.start()
+
+
+
+def set_chrome_driver():
+    
+    # chrome_options = webdriver.ChromeOptions()
+
+
+    os.environ[&#39;WDM_LOG_LEVEL&#39;] = &#39;0&#39;
+
+    options = webdriver.ChromeOptions()
+    options.add_argument(&quot;--headless&quot;)
+    options.add_argument(&quot;start-maximized&quot;)
+    options.add_experimental_option(&#39;excludeSwitches&#39;, [&#39;enable-logging&#39;])
+    
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+
+    return driver
+
+
+
+prev_transaction_index = 0
+
+def parseInputSize(data):
+    global prev_transaction_index
+    input_size_index = 5
+    
+
+    if(data[4] == 0xff):
+        # print(&quot;가변길이 8바이트&quot;)
+        prev_transaction_index = input_size_index + 8
+        print(&quot;    입력 개수(Input Size): &#123;&#125;&quot;.format(int.from_bytes(data[5:prev_transaction_index], byteorder=&#39;little&#39;)))
+    elif(data[4] == 0xfe):
+        # print(&quot;가변길이 4바이트&quot;)    
+        prev_transaction_index = input_size_index + 4
+        print(&quot;    입력 개수(Input Size): &#123;&#125;&quot;.format(int.from_bytes(data[5:prev_transaction_index], byteorder=&#39;little&#39;)))
+    elif(data[4] == 0xfd):
+        # print(&quot;가변길이 2바이트&quot;)
+        prev_transaction_index = input_size_index + 2
+        print(&quot;    입력 개수(Input Size): &#123;&#125;&quot;.format(int.from_bytes(data[5:prev_transaction_index], byteorder=&#39;little&#39;)))
+    else:
+        # print(&quot;가변길이 1바이트&quot;)
+        input_size_index = 4
+        prev_transaction_index = input_size_index + 1
+        print(&quot;    입력 개수(Input Size): &#123;&#125;&quot;.format(int.from_bytes(data[input_size_index:prev_transaction_index], byteorder=&#39;little&#39;)))
+
+    return prev_transaction_index
+
+
+
+
+
+tx_id = &#39;d28fdd43f7446f7bc39e2c2330c73793a72bade05fb34dd4dd6a98bb9703fa1d&#39;
+tx_id = &#39;d8d983b06fc92317fdb6246fddcdaa589c0f888feb6d953e8376d4968ae44389&#39;
+tx_id = &#39;4074101a6059c764de75c762ac5f751b0ef6ed1513e9815548a63033de2e8966&#39;
+tx_id = &#39;995d2f67ca799318415fcf9b9a7c571c4d09915eaaf36ab207cc2d19b839004a&#39;
+
+url = &#39;https://btc.bitaps.com/raw/transaction/&#39;
+url = url + f&#39;&#123;tx_id&#125;&#39;
+
+
+driver = set_chrome_driver()
+driver.get(url=url)
+
+
+print(&quot;[+] 트랜잭션 정보 추출&quot;)
+print(&quot;    transaction id: &quot; + tx_id)
+print(&quot;    transaction url: &quot; + url)
+
+
+
+
+
+
+
+transaction_str = driver.find_element_by_id(&#39;raw-tx&#39;).text
+raw = bytes.fromhex(transaction_str)
+
+driver.quit()
+
+
+# print(transaction_str)
+# print(transaction_str[-4:])
+
+#parseInputSize(b&#39;\x00\x00\x00\x00\x64&#39;)
+#parseInputSize(b&#39;\x00\x00\x00\x00\xfd\xff\x00&#39;)
+#parseInputSize(b&#39;\x00\x00\x00\x00\xfd\x2b\x02&#39;)
+#parseInputSize(b&#39;\x00\x00\x00\x00\xfe\x7f\x11\x01\x00&#39;)
+#parseInputSize(b&#39;\x00\x00\x00\x00\xff\x6d\xc7\xed\x3e\x60\x10\x00\x00&#39;)
+
+
+
+def to_little(val):
+little_hex = bytearray.fromhex(val)
+little_hex.reverse()
+print(&quot;Byte array format:&quot;, little_hex)
+
+str_little = &#39;&#39;.join(format(x, &#39;02x&#39;) for x in little_hex)
+
+return str_little
+
+print(&quot;\n[+] 트랜잭션 구성요소&quot;)
+print(&quot;    버전(Version): &#123;&#125;&quot;.format(int.from_bytes(raw[0:4], byteorder=&#39;little&#39;)))
+
+prev_transaction_index = parseInputSize(raw) * 2
+prev_transaction = transaction_str[prev_transaction_index:prev_transaction_index+64]
+prev_transaction = int(prev_transaction, 16).to_bytes(32, byteorder=&quot;little&quot;).hex()
+
+
+print(&quot;    이전 트랜잭션(Prev TX): &#123;&#125;&quot;.format(prev_transaction))
+
+
+prev_transaction_number_index = prev_transaction_index+64
+prev_transaction_str = transaction_str[prev_transaction_number_index:prev_transaction_number_index+8]
+prev_transaction_str = int(prev_transaction_str, 16).to_bytes(4, byteorder=&quot;little&quot;).hex()
+
+print(&quot;    이전 트랜잭션 출력번호(Prev TX Number): &#123;&#125;&quot;.format(prev_transaction_str))
+
+
+print(&quot;    록타임(Locktime): &#123;&#125;&quot;.format(int.from_bytes(raw[-4:], byteorder=&#39;little&#39;)))
+</code></pre></div>
+</br>
+
+<p>조잡하게 구현해보았다.</p>
+</br>
+
+<blockquote>
+<p>[+] 트랜잭션 정보 추출<br>    transaction id: 995d2f67ca799318415fcf9b9a7c571c4d09915eaaf36ab207cc2d19b839004a<br>    transaction url: <a target="_blank" rel="noopener" href="https://btc.bitaps.com/raw/transaction/995d2f67ca799318415fcf9b9a7c571c4d09915eaaf36ab207cc2d19b839004a">https://btc.bitaps.com/raw/transaction/995d2f67ca799318415fcf9b9a7c571c4d09915eaaf36ab207cc2d19b839004a</a></p>
+<p>[+] 트랜잭션 구성요소<br>    버전(Version): 1<br>    입력 개수(Input Size): 1<br>    이전 트랜잭션(Prev TX): 9414683ca8ffba2de87f30cae71339458592f9ba6b3d7900ef4109da25cc4dc8<br>    이전 트랜잭션 출력번호(Prev TX Number): 00000001<br>    록타임(Locktime): 0</p>
+</blockquote>
+</br>
+
+<p>구현 결과 트랜잭션 정보페이지와 동일한 형태로 값이 산출되었다.</p>
+</br>
+
+<h2 id="한줄평"><a href="#한줄평" class="headerlink" title="한줄평"></a>한줄평</h2><div class="code-wrapper"><pre><code class="hljs">리틀엔디언, 빅엔디언을 명확히 구분하자.
+</code></pre></div>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Research/">Research</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/blockchain/">blockchain</a>
+                    
+                      <a class="hover-with-bg" href="/tags/transaction/">transaction</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/16/post04/">
+                        <span class="hidden-mobile">[블록체인] 직렬화</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
